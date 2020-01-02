@@ -30,4 +30,4 @@ Originally from tofugu.com.
 
 ## Kanji
 
-All of the Kanji come from the [this Anki deck](https://ankiweb.net/shared/info/1862058740).
+All of the Kanji come from the [this Anki deck](https://ankiweb.net/shared/info/2009196675).
