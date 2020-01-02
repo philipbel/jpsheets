@@ -1,0 +1,15 @@
+\documentclass{sheet}
+\usepackage{kana}
+
+\pagestyle{empty}
+
+\begin{document}
+\setlength\parindent{0pt}
+\csvreader{hiragana.csv}%
+{1=\Kana, 2=\Roman, 3=\StrokeFile, 4=\MnemonicFile, 5=\MnemonicText}%
+{
+  \DrawKanaPage{\Kana}{\Roman}{\StrokeFile}{\MnemonicFile}{\MnemonicText}
+  \newpage
+}
+
+\end{document}

@@ -1,0 +1,176 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{kana}
+
+\RequirePackage{grid}
+\RequirePackage{tikz}
+\RequirePackage{graphicx}
+
+\newcommand{\HiraganaMain}[1]{\fontsize{70}{84}\textrm{#1}}
+
+
+% \DrawKanaHeader
+% #1 - Kana character
+% #2 - Roman text
+% #3 - Kana stroke file
+% #4 - Kana mnemonic file
+% #5 - Kana mnemonic text
+\makeatletter
+\newdimen\kana@margin@inner
+\newdimen\kana@height
+\newdimen\kana@stroke@height
+\newdimen\kana@mnemonic@graphic@height
+\newdimen\kana@TopLeftY
+\newdimen\kana@BottomLeftY
+\newdimen\header@mnemonic@graphic@topRightX
+\newdimen\header@mnemonic@text@width
+\newdimen\text@topRightX
+
+\setlength{\kana@margin@inner}{6pt}
+\providecommand*{\kana@background@color}{gray!15}
+\providecommand*{\kana@char@font@size}{50}
+\providecommand*{\kana@var@font@size}{14}
+\providecommand*{\kana@roman@font@size}{32}
+\setlength{\kana@stroke@height}{70pt}
+\setlength{\kana@mnemonic@graphic@height}{70pt}
+\providecommand*{\kana@mnemonic@background@color}{orange}
+\providecommand*{\kana@stroke@background@color}{gray!20}
+
+\providecommand*{\kana@char@font}{\fontsize{\kana@char@font@size}{\kana@char@font@size}\sffamily}
+\providecommand*{\kana@var@font}{\fontsize{\kana@var@font@size}{\kana@var@font@size}}
+\providecommand*{\kana@varI@font}{\kana@var@font\rmfamily}
+\providecommand*{\kana@varII@font}{\kana@var@font\rounded}
+\providecommand*{\kana@roman@font}{\fontsize{\kana@roman@font@size}{\kana@roman@font@size}\sffamily\mdseries}
+\providecommand*{\kana@mnemonic@text@font}{\footnotesize}
+\providecommand*{\cell@font}{\kana@roman@font\fontsize{40}{48}}
+
+
+\newcommand{\DrawKanaHeader}[5]{
+  \providecommand*{\kana@char}{#1}
+  \providecommand*{\kana@roman}{#2}
+  \providecommand*{\kana@stroke@file}{#3}
+  \providecommand*{\kana@mnemonic@file}{#4}
+  \providecommand*{\kana@mnemonic@text}{#5}
+
+  \pgfextractx{\text@topRightX}{\pgfpointanchor{current page text area}{north east}}
+
+  \begin{scope}[local bounding box=Header,
+    every node/.style = {
+      inner sep=0,
+      outer sep=0,
+      % draw, rectangle, thin
+      },
+    spaced/.style = {
+      inner sep=\kana@margin@inner
+      }
+    ]
+
+    \begin{scope}[local bounding box=Kana]
+      \begin{scope}[local bounding box=KanaCharVarRoman]
+        \node [spaced, anchor=north west] at (0, 0) (KanaChar) {\kana@char@font\kana@char};
+
+        \node [anchor=north, inner sep=\kana@margin@inner] (KanaRoman)
+          at (KanaChar.south)
+          { \kana@roman@font \kana@roman };
+
+        \node [spaced, anchor=north] (KanaVar)
+          at (KanaRoman.south)
+          { {\kana@varI@font\kana@char}\,{\kana@varII@font\kana@char} };
+      \end{scope}
+
+      \node [anchor=west, inner sep=\kana@margin@inner] (KanaStroke)
+        at ( $ (KanaCharVarRoman.east) + (\kana@margin@inner, 0)  $ )
+        { \includegraphics[height=\kana@stroke@height]{\kana@stroke@file} };
+    \end{scope}
+
+    \begin{scope}[local bounding box=Mnemonic]
+      \node [spaced, anchor=west] (MnemonicGraphic)
+        at ( $ (Kana.east) + (\kana@margin@inner, 0) $ )
+        {\includegraphics[height=\kana@mnemonic@graphic@height]{\kana@mnemonic@file}};
+
+      \pgfextractx{\header@mnemonic@graphic@topRightX}{\pgfpointanchor{MnemonicGraphic}{north east}}
+      \pgfmathsetlength{\header@mnemonic@text@width}{
+        \text@topRightX - \header@mnemonic@graphic@topRightX - 2\kana@margin@inner}
+
+      \node [
+        spaced,
+        right=of MnemonicGraphic,
+        text width=\header@mnemonic@text@width
+        ] (MnemonicText)
+        { {\kana@mnemonic@text@font \kana@mnemonic@text} };
+    \end{scope}
+
+    \begin{scope}[on background layer]
+      \draw[rounded corners, thick]
+        (KanaCharVarRoman.north west)
+        rectangle
+        (KanaCharVarRoman.south east |- KanaCharVarRoman.south east);
+
+      \draw[rounded corners, thick]
+        (KanaStroke.north west |- Kana.north west)
+        rectangle
+        (KanaStroke.south east |- Kana.south west);
+
+      \draw[rounded corners, thick]
+        (Mnemonic.north west |- Kana.north west)
+        rectangle
+        (Mnemonic.south east |- Kana.south west);
+
+      \fill[gray!20]
+        (KanaCharVarRoman.north west |- KanaRoman.north)
+        rectangle
+        (KanaCharVarRoman.north east |- KanaRoman.south east);
+    \end{scope}
+    \coordinate (HeaderBottomLeft) at (Kana.south west);
+  \end{scope}
+
+  \pgfextractx{\HeaderTopLeftX}{\pgfpointanchor{Header}{north west}}
+  \pgfextracty{\HeaderTopLeftY}{\pgfpointanchor{Header}{north west}}
+  \pgfextractx{\HeaderTopRightX}{\pgfpointanchor{Header}{north east}}
+  \pgfextracty{\HeaderTopRightY}{\pgfpointanchor{Header}{north east}}
+
+  \pgfextractx{\HeaderBottomLeftX}{\pgfpointanchor{Header}{south west}}
+  \pgfextracty{\HeaderBottomLeftY}{\pgfpointanchor{Header}{south west}}
+  \pgfextractx{\HeaderBottomRightX}{\pgfpointanchor{Header}{south east}}
+  \pgfextracty{\HeaderBottomRightY}{\pgfpointanchor{Header}{south east}}
+
+  \pgfmathsetlength{\HeaderHeight}{abs(\HeaderTopLeftY - \HeaderBottomLeftY)}
+
+  % DEBUG
+  % \path [draw, yellow, thick]
+  %   (\HeaderTopLeftX, \HeaderTopLeftY) -- (\HeaderBottomRightX, \HeaderBottomRightY)
+  %   (\HeaderTopRightX, \HeaderTopRightY) -- (\HeaderBottomLeftX, \HeaderBottomLeftY);
+  % \Dim{\HeaderHeight}
+}
+\makeatother
+
+% \DrawKanaPage
+% #1 - Kana character
+% #2 - Roman text
+% #3 - Kana stroke file
+% #4 - Kana mnemonic file
+% #5 - Kana mnemonic text
+\makeatletter
+\newcommand{\DrawKanaPage}[5]{
+  \providecommand*{\kana@char}{#1}
+  \providecommand*{\kana@roman}{#2}
+  \providecommand*{\kana@stroke@file}{#3}
+  \providecommand*{\kana@mnemonic@file}{#4}
+  \providecommand*{\kana@mnemonic@text}{#5}
+
+  \begin{tikzpicture}[
+    remember picture,
+    overlay,
+    node distance=0cm,
+    every node/.style={
+      % rectangle,
+      % draw,
+      % thin,
+      inner sep=0,
+      outer sep=0
+      }
+    ]
+    \DrawKanaHeader{\kana@char}{\kana@roman}{\kana@stroke}{\kana@mnemonic@file}{\kana@mnemonic@text}
+    \DrawGrid{\kana@char}{\cell@font}
+  \end{tikzpicture}
+}
+\makeatother

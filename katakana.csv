@@ -1,0 +1,47 @@
+Kana, Roman, {Stroke File}, {Mnemonic File}, {Mnemonic Text}
+{ア}, {A},   {stroke-order/katakana/a},   {mnemonics/katakana/a},   {An "A" on its side.}
+{イ}, {I},   {stroke-order/katakana/i},   {mnemonics/katakana/i},   {An \emph{ea}gle standing on the ground. }
+{ウ}, {U},   {stroke-order/katakana/u},   {mnemonics/katakana/u},   {Similar to hiragana.}
+{エ}, {E},   {stroke-order/katakana/e},   {mnemonics/katakana/e},   {An I-beam, used by \emph{e}ngineers.}
+{オ}, {O},   {stroke-order/katakana/o},   {mnemonics/katakana/o},   {\emph{Oh} God, you just got flashed by this creepy guy.}
+{カ}, {KA},  {stroke-order/katakana/ka},  {mnemonics/katakana/ka},  {Similar to hiragana.}
+{キ}, {KI},  {stroke-order/katakana/ki},  {mnemonics/katakana/ki},  {A \emph{key}, similar to hiragana.}
+{ク}, {KU},  {stroke-order/katakana/ku},  {mnemonics/katakana/ku},  {A \emph{cook’s} hat. }
+{ケ}, {KE},  {stroke-order/katakana/ke},  {mnemonics/katakana/ke},  {A slighly skewed "K."}
+{コ}, {KO},  {stroke-order/katakana/ko},  {mnemonics/katakana/ko},  {See the \emph{corners}? Also similar to hiragana, but turned around.}
+{サ}, {SA},  {stroke-order/katakana/sa},  {mnemonics/katakana/sa},  {\emph{Sardines}, stacked.}
+{シ}, {SHI}, {stroke-order/katakana/shi}, {mnemonics/katakana/shi}, {\emph{She's} tilting her head and smiling.}
+{ス}, {SU},  {stroke-order/katakana/su},  {mnemonics/katakana/su},  {A hanger for your \emph{su}it.}
+{セ}, {SE},  {stroke-order/katakana/se},  {mnemonics/katakana/se},  {Similar to hiragana.}
+{ソ}, {SO},  {stroke-order/katakana/so},  {mnemonics/katakana/so},  {A vertical needle and thread to \emph{sew}. Not to be confused with ン (n).}
+{タ}, {TA},  {stroke-order/katakana/ta},  {mnemonics/katakana/ta},  {A \emph{tall} tidal wave!}
+{チ}, {CHI}, {stroke-order/katakana/chi}, {mnemonics/katakana/chi}, {A \emph{che}erleader.}
+{ツ}, {TSU}, {stroke-order/katakana/tsu}, {mnemonics/katakana/tsu}, {Like ソ (so), but this one has \emph{two} needles.}
+{テ}, {TE},  {stroke-order/katakana/te},  {mnemonics/katakana/te},  {A \emph{te}lephone pole.}
+{ト}, {TO},  {stroke-order/katakana/to},  {mnemonics/katakana/to},  {A \emph{to}tem pole.}
+{ナ}, {NA},  {stroke-order/katakana/na},  {mnemonics/katakana/na},  {A friendly \emph{nar}whale.}
+{ニ}, {NI},  {stroke-order/katakana/ni},  {mnemonics/katakana/ni},  {Two \emph{nee}dles on their side. "Ni" also means two in Japanese.}
+{ヌ}, {NU},  {stroke-order/katakana/nu},  {mnemonics/katakana/nu},  {Chopsticks grabbing \emph{noo}dles.}
+{ネ}, {NE},  {stroke-order/katakana/ne},  {mnemonics/katakana/ne},  {A \emph{ne}cromancer has summoned this zombie!}
+{ノ}, {NO},  {stroke-order/katakana/no},  {mnemonics/katakana/no},  {A really long \emph{no}se.}
+{ハ}, {HA},  {stroke-order/katakana/ha},  {mnemonics/katakana/ha},  {A rice patty \emph{ha}t.}
+{ヒ}, {HI},  {stroke-order/katakana/hi},  {mnemonics/katakana/hi},  {\emph{He} has no head, and he's reaching for you.}
+{フ}, {FU},  {stroke-order/katakana/fu},  {mnemonics/katakana/fu},  {A \emph{fu}nny looking owl.}
+{ヘ}, {HE},  {stroke-order/katakana/he},  {mnemonics/katakana/he},  {Like the hiragana (Mount St. \emph{He}lens).}
+{ホ}, {HO},  {stroke-order/katakana/ho},  {mnemonics/katakana/ho},  {A \emph{ho}ly cross.}
+{マ}, {MA},  {stroke-order/katakana/ma},  {mnemonics/katakana/ma},  {Use \emph{ma}th to figure out measurements and angles.}
+{ミ}, {MI},  {stroke-order/katakana/mi},  {mnemonics/katakana/mi},  {Three \emph{mi}ssiles about to touch down.}
+{ム}, {MU},  {stroke-order/katakana/mu},  {mnemonics/katakana/mu},  {A pile of cow poo. \emph{Moo!}}
+{メ}, {ME},  {stroke-order/katakana/me},  {mnemonics/katakana/me},  {Similar to hirigana. "Me" means eye in Japanese.}
+{モ}, {MO},  {stroke-order/katakana/mo},  {mnemonics/katakana/mo},  {Similar to hiragana.}
+{ヤ}, {YA},  {stroke-order/katakana/ya},  {mnemonics/katakana/ya},  {Similar to hiragana.}
+{ユ}, {YU},  {stroke-order/katakana/yu},  {mnemonics/katakana/yu},  {\emph{You} have a hook for a hand.}
+{ヨ}, {YO},  {stroke-order/katakana/yo},  {mnemonics/katakana/yo},  {A \emph{yo}gurt container.}
+{ラ}, {RA},  {stroke-order/katakana/ra},  {mnemonics/katakana/ra},  {A \emph{ra}ptor with rad sunglasses.}
+{リ}, {RI},  {stroke-order/katakana/ri},  {mnemonics/katakana/ri},  {Similar to hiragana.}
+{ル}, {RU},  {stroke-order/katakana/ru},  {mnemonics/katakana/ru},  {Two \emph{routes} you can take.}
+{レ}, {RE},  {stroke-order/katakana/re},  {mnemonics/katakana/re},  {Long flowing \emph{red} hair.}
+{ロ}, {RO},  {stroke-order/katakana/ro},  {mnemonics/katakana/ro},  {A \emph{road} going around in a square.}
+{ワ}, {WA},  {stroke-order/katakana/wa},  {mnemonics/katakana/wa},  {A question mark without the dot, and questions usually start with \emph{"What?"}}
+{ヲ}, {WO},  {stroke-order/katakana/wo},  {mnemonics/katakana/wo},  {Pronounced like を (お), but to remember this is "wo," think of a dog \emph{woo}fing so hard its tongue is flying out.}
+{ン}, {N},   {stroke-order/katakana/n},   {mnemonics/katakana/n},   {This is /emph{N/m} Night Shyamalan, and the twist is that he only has one eye.}

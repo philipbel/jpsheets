@@ -1,0 +1,114 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{grid}
+
+\RequirePackage{tikz}
+
+%%%%%%%%%%%
+% \DrawGrid
+% #1 - cell text
+% #2 - Number of columns
+\makeatletter
+
+\newdimen\grid@AvailableWidth
+\newdimen\grid@AvailableHeight
+\newdimen\grid@cell@width
+\newdimen\grid@TopLeftX
+\newdimen\grid@TopLeftY
+\newdimen\grid@TopRightX
+\newdimen\grid@TopRightY
+\newdimen\grid@BottomLeftX
+\newdimen\grid@BottomLeftY
+\newdimen\grid@BottomRightX
+\newdimen\grid@BottomRightY
+
+\newlength{\GridOffset}
+\setlength{\GridOffset}{0.5cm}
+
+\providecommand*{\cell@color@example}{black!20}
+\providecommand*{\cell@color}{black}
+
+% #1 - cell text
+% #2 - cell font
+\newcommand{\DrawGrid}[2]{
+  \providecommand*{\cell@text}{#1}
+  \providecommand*{\cell@font}{#2}
+
+  \pgfmathsetlength{\grid@TopLeftX}{\HeaderBottomLeftX}
+  \pgfmathsetlength{\grid@TopLeftY}{\HeaderBottomLeftY - \GridOffset}
+  \pgfmathsetlength{\grid@TopRightX}{\HeaderBottomRightX}
+  \pgfmathsetlength{\grid@TopRightY}{\grid@TopLeftY}
+
+  \pgfmathsetlength{\grid@BottomLeftX}{\grid@TopLeftX}
+  \pgfmathsetlength{\grid@BottomLeftY}{-\textheight - \grid@TopLeftY - \HeaderHeight + \GridOffset)}
+  \pgfmathsetlength{\grid@BottomRightX}{\grid@TopRightX}
+  \pgfmathsetlength{\grid@BottomRightY}{\grid@BottomLeftY}
+
+  \pgfmathsetlength{\grid@AvailableWidth}{abs(\grid@TopLeftX - \grid@TopRightX)}
+  \pgfmathsetlength{\grid@AvailableHeight}{abs(\grid@BottomLeftY-\grid@TopLeftY)}
+  \pgfmathsetlength{\grid@cell@width}{\grid@AvailableWidth / \GridColumns}
+  \pgfmathtruncatemacro{\grid@NumRows}{\grid@AvailableHeight/\grid@cell@width}
+
+  % DEBUGGING
+  \Dim{\HeaderHeight}
+  % \Dim{\HeaderTopLeftX}
+  % \Dim{\HeaderTopLeftY}
+  % \Dim{\HeaderTopRightX}
+  % \Dim{\HeaderTopRightY}
+  % \Dim{\HeaderBottomLeftX}
+  % \Dim{\HeaderBottomLeftY}
+  % \Dim{\HeaderBottomRightX}
+  % \Dim{\HeaderBottomRightY}
+  % \Dim{\grid@TopLeftX}
+  % \Dim{\grid@TopLeftY}
+  % \Dim{\grid@TopRightX}
+  % \Dim{\grid@TopRightY}
+  % \Dim{\grid@BottomLeftX}
+  % \Dim{\grid@BottomLeftY}
+  % \Dim{\grid@BottomRightX}
+  % \Dim{\grid@BottomRightY}
+  % \Dim{\grid@AvailableWidth}
+  % \Dim{\grid@AvailableHeight}
+  % \path [draw, thick, blue] (\grid@TopLeftX, \grid@TopLeftY) -- (\grid@BottomRightX, \grid@BottomRightY) { };
+  % \path [draw, thick, blue] (\grid@TopRightX, \grid@TopRightY) -- (\grid@BottomLeftX, \grid@BottomLeftY) { };
+
+  \begin{scope}[
+    cell/.style = {
+      minimum size=\grid@cell@width,
+      draw,
+      rectangle,
+      font=\cell@font
+    }
+  ]
+    % First cell
+    \node (1_1) [cell, text=black, anchor=north west] at (\grid@TopLeftX, \grid@TopLeftY) { \cell@text };
+    % Remainder of first column
+    \foreach \row in {2, ..., \grid@NumRows} {
+      \pgfmathtruncatemacro{\prevRow}{\row - 1};
+      \node (\row_1) [cell, text=\cell@color@example, below=of {\prevRow_1}] { \cell@text };
+    }
+    % Remainder of first row
+    \foreach \col in {2, ..., \GridColumns} {
+      \pgfmathtruncatemacro{\prevCol}{\col - 1};
+      \pgfmathtruncatemacro{\ColorFactor}{(1 - \col/(\GridColumns*1.2))*10}
+      \node (1_\col) [cell, text=black!\ColorFactor!white, right=of 1_\prevCol] { \cell@text };
+    }
+    % Remainder of the grid
+    \foreach \col in {2, ..., \GridColumns} {
+      \foreach \row in {2, ..., \grid@NumRows} {
+        \pgfmathtruncatemacro{\prevCol}{\col - 1};
+        \node (\row_\col) [cell, right=of \row_\prevCol] { };
+      }
+    }
+    % Internal lines
+    \foreach \row in {1, ..., \grid@NumRows} {
+      \foreach \col in {1, ..., \GridColumns} {
+        \path [draw, dotted, gray]
+          (\row_\col.north) -- (\row_\col.south)
+          (\row_\col.west) -- (\row_\col.east)
+          (\row_\col.north west) -- (\row_\col.south east)
+          (\row_\col.north east) -- (\row_\col.south west);
+      }
+    }
+  \end{scope}
+}
+\makeatother

@@ -274,3 +274,32 @@ TSWLatexianTemp*
 
 # Makeindex log files
 *.lpz
+.venv
+.vscode/.ropeproject/objectdb
+build/hiragana.pdf
+build/kanji_1-99.pdf
+build/kanji_1-100.pdf
+build/kanji_101-199.pdf
+build/kanji_101-200.pdf
+build/kanji_201-300.pdf
+build/kanji_301-400.pdf
+build/kanji_401-500.pdf
+build/kanji_501-600.pdf
+build/kanji_601-700.pdf
+build/kanji_701-800.pdf
+build/kanji_801-900.pdf
+build/kanji_901-1000.pdf
+build/kanji_1001-1100.pdf
+build/kanji_1101-1200.pdf
+build/kanji_1201-1300.pdf
+build/kanji_1301-1400.pdf
+build/kanji_1401-1500.pdf
+build/kanji_1501-1600.pdf
+build/kanji_1601-1700.pdf
+build/kanji_1701-1800.pdf
+build/kanji_1801-1900.pdf
+build/kanji_1901-2000.pdf
+build/kanji_2001-2100.pdf
+build/kanji_2101-2199.pdf
+build/kanji.pdf
+build/katakana.pdf

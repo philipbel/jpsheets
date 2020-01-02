@@ -1,0 +1,180 @@
+\documentclass{sheet}
+\usepackage{grid}
+
+\usepackage{csvsimple}
+\usepackage[export]{adjustbox}
+\usepackage[dvipsnames, svgnames, x11names]{xcolor}
+\usepackage{varwidth}
+\usepackage{xkeyval}
+\usepackage{tikz}
+\usetikzlibrary{calc, positioning, shapes, fpu, backgrounds}
+\usepackage{tikzpagenodes}
+
+\pagestyle{empty}
+
+\providecommand*{\CellFont}{\rmfamily\fontsize{40}{48}}
+\newlength{\MarginInner}
+\setlength{\MarginInner}{6pt}
+% \newlength{\KanjiStrokeHeight}
+% \setlength{\KanjiStrokeHeight}{60pt}
+
+%  #1 - id
+%  #2 - kanji
+%  #3 - strokeDiagram
+%  #4 - story
+%  #4 - onYomi
+%  #5 - kunYomi
+%  #6 - words
+%  #8 - jlpt
+%  #9 - jouYou
+% #10 - keyword
+% #11 - constituent
+\makeatletter
+
+\newlength{\text@topRightX}
+\newlength{\kanji@text@AvailableWidth}
+\newlength{\kanji@group@TopRightX}
+\newlength{\kanji@group@TopRightY}
+\newlength{\kanji@group@BottomRightX}
+\newlength{\kanji@group@BottomRightY}
+
+\define@key{header}{kanjiID}{\def\header@kanji@id{#1}}
+\define@key{header}{kanji}{\def\header@kanji{#1}}
+\define@key{header}{strokeDiagram}{\def\header@strokeDiagram{#1}}
+\define@key{header}{story}{\def\header@story{#1}}
+\define@key{header}{onYomi}{\def\header@onYomi{#1}}
+\define@key{header}{kunYomi}{\def\header@kunYomi{#1}}
+\define@key{header}{words}{\def\header@words{#1}}
+\define@key{header}{jlpt}{\def\header@jlpt{#1}}
+\define@key{header}{jouYou}{\def\header@jouYou{#1}}
+\define@key{header}{keywords}{\def\header@keywords{#1}}
+\define@key{header}{constituents}{\def\header@constituents{#1}}
+
+\newcommand{\DrawKanjiHeader}[1]{
+  \setkeys{header}{#1}
+
+  \begin{scope}[local bounding box=Header]
+    \begin{scope}[local bounding box=KanjiTextGroup]
+      \begin{scope}[local bounding box=KanjiGroup, node distance=0]
+        \node (Kanji)
+          [text height=90pt, anchor=north west, inner sep=\MarginInner]
+          at (0, 0)
+          { \fontsize{90}{90} \header@kanji };
+
+          \begin{scope}
+            % \node (KanjiID) [anchor = south west]
+            %   at ( $ (Kanji.north west) + (0, \MarginInner) $ )
+            %   { \sffamily\large\bfseries \id };
+
+            \node (JLPT) [anchor = north east, text height=10pt]
+              at ( $ (Kanji.south east) + (0, 0) $ )
+              { \sffamily \footnotesize JLPT: \header@jlpt };
+
+            \node (JouYou) [anchor = north east, text height=10pt]
+              at ( $ (JLPT.south east) + (0, 0) $ )
+              { \footnotesize \sffamily 常用漢字: \header@jouYou };
+          \end{scope}
+      \end{scope}
+
+      \pgfextractx{\text@topRightX}{\pgfpointanchor{current page text area}{north east}}
+
+      \pgfextractx{\kanji@group@TopRightX}{\pgfpointanchor{KanjiGroup}{north east}}
+      \pgfextracty{\kanji@group@TopRightY}{\pgfpointanchor{KanjiGroup}{north east}}
+      \pgfextractx{\kanji@group@BottomRightX}{\pgfpointanchor{KanjiGroup}{south east}}
+      \pgfextracty{\kanji@group@BottomRightY}{\pgfpointanchor{KanjiGroup}{south east}}
+
+      \pgfmathsetlength{\kanji@text@AvailableWidth}{abs(\text@topRightX - \kanji@group@TopRightX)}
+      \Dim{\kanji@text@AvailableWidth}
+
+      \node (KanjiWord)
+        [anchor=north west, inner sep=0, align=left]
+        at ( $ (Kanji.north east) + (2\MarginInner, 0) $ )
+        { \LARGE\bfseries\sffamily\id.\ \header@keywords };
+
+      \node (KanjiText)
+        [anchor=north west,
+          text width = \kanji@text@AvailableWidth - 2\MarginInner,
+          align = left]
+        at ( $ (KanjiWord.south west) - (0, \MarginInner) $ )
+        {
+          \textbf{音読み}: \header@onYomi\\
+          \textbf{訓読み}: \header@kunYomi\\[\MarginInner]
+          \textbf{Words}: \header@words \\
+          \textbf{Story}: \header@story \\[\MarginInner]
+          \textbf{Constituents}: \header@constituents
+        };
+    \end{scope}
+
+    \node (KanjiStroke)
+      [anchor=north west,
+        text width = \textwidth]
+      at ( $ (KanjiTextGroup.south west) + (0, -\MarginInner) $ )
+      {
+        \includegraphics%
+          [max height = 0.3\textheight, max width=\textwidth]%
+          {\header@strokeDiagram}
+      };
+
+    \draw[rounded corners, thick]
+      (Kanji.north west)
+      rectangle
+      (Kanji.south east);
+    % \draw[rounded corners, thick]
+    %   (KanjiID.north west)
+    %   rectangle
+    %   (KanjiID.south east);
+  \end{scope}
+}
+\makeatother
+
+\begin{document}
+\setlength\parindent{0pt}
+\csvreader[head to column names]{kanji.csv}{}%
+{
+  \begin{tikzpicture}[
+    remember picture,
+    overlay,
+    node distance=0cm,
+    every node/.style={
+      % rectangle, draw, thin,
+      inner sep=0,
+      outer sep=0
+      }
+    ]
+    \message{Processing Kanji \id, \strokeDiagram^^J}
+
+    \DrawKanjiHeader{
+      kanjiID = \id,
+      kanji = \kanji,
+      strokeDiagram = \strokeDiagram,
+      story = \story,
+      onYomi = \onYomi,
+      kunYomi = \kunYomi,
+      words = \words,
+      jlpt = \jlpt,
+      jouYou = \jouYou,
+      keywords = \keyword,
+      constituents = \constituent%
+    }
+
+    \pgfextractx{\HeaderTopLeftX}{\pgfpointanchor{Header}{north west}}
+    \pgfextracty{\HeaderTopLeftY}{\pgfpointanchor{Header}{north west}}
+    \pgfextractx{\HeaderTopRightX}{\pgfpointanchor{Header}{north east}}
+    \pgfextracty{\HeaderTopRightY}{\pgfpointanchor{Header}{north east}}
+
+    \pgfextractx{\HeaderBottomLeftX}{\pgfpointanchor{Header}{south west}}
+    \pgfextracty{\HeaderBottomLeftY}{\pgfpointanchor{Header}{south west}}
+    \pgfextractx{\HeaderBottomRightX}{\pgfpointanchor{Header}{south east}}
+    \pgfextracty{\HeaderBottomRightY}{\pgfpointanchor{Header}{south east}}
+
+    \pgfmathsetlength{\HeaderHeight}{abs(\HeaderTopLeftY - \HeaderBottomLeftY)}
+    \Dim{\HeaderTopLeftY}
+    \Dim{\HeaderBottomLeftY}
+    \Dim{\HeaderHeight}
+
+    \DrawGrid{\kanji}{\CellFont}
+  \end{tikzpicture}
+  \newpage
+}
+
+\end{document}
