@@ -28,6 +28,6 @@ The hiragana and katakana mnemonic text and graphic are based on [this shared An
 
 Originally from tofugu.com.
 
-## Kanji
+### Kanji
 
 All of the Kanji come from the [this Anki deck](https://ankiweb.net/shared/info/2009196675).
