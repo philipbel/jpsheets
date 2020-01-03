@@ -12,6 +12,7 @@
 \newdimen\grid@AvailableWidth
 \newdimen\grid@AvailableHeight
 \newdimen\grid@cell@width
+\newdimen\grid@cell@font@size
 \newdimen\grid@TopLeftX
 \newdimen\grid@TopLeftY
 \newdimen\grid@TopRightX
@@ -21,8 +22,11 @@
 \newdimen\grid@BottomRightX
 \newdimen\grid@BottomRightY
 
+
 \newlength{\GridOffset}
 \setlength{\GridOffset}{0.5cm}
+\newlength{\GridCellInnerMargin}
+\setlength{\GridCellInnerMargin}{1mm}
 
 \providecommand*{\cell@color@example}{black!20}
 \providecommand*{\cell@color}{black}
@@ -46,10 +50,12 @@
   \pgfmathsetlength{\grid@AvailableWidth}{abs(\grid@TopLeftX - \grid@TopRightX)}
   \pgfmathsetlength{\grid@AvailableHeight}{abs(\grid@BottomLeftY-\grid@TopLeftY)}
   \pgfmathsetlength{\grid@cell@width}{\grid@AvailableWidth / \GridColumns}
+  \pgfmathsetlength{\grid@cell@font@size}{\grid@cell@width - 2\GridCellInnerMargin}
   \pgfmathtruncatemacro{\grid@NumRows}{\grid@AvailableHeight/\grid@cell@width}
 
   % DEBUGGING
   \Dim{\HeaderHeight}
+  \Dim{\grid@cell@font@size}
   % \Dim{\HeaderTopLeftX}
   % \Dim{\HeaderTopLeftY}
   % \Dim{\HeaderTopRightX}
@@ -76,7 +82,9 @@
       minimum size=\grid@cell@width,
       draw,
       rectangle,
-      font=\cell@font
+      font={\cell@font\fontsize{\grid@cell@font@size}{\grid@cell@font@size}}%,
+      % minimum height=\grid@cell@font@size,
+      % minimum width=\grid@cell@width
     }
   ]
     % First cell

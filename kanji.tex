@@ -12,11 +12,14 @@
 
 \pagestyle{empty}
 
-\providecommand*{\CellFont}{\rmfamily\fontsize{40}{48}}
+% \providecommand*{\CellFont}{\rmfamily\fontsize{66}{66}}
+\newcommand*{\GridColumns}{8}
 \newlength{\MarginInner}
 \setlength{\MarginInner}{6pt}
 % \newlength{\KanjiStrokeHeight}
 % \setlength{\KanjiStrokeHeight}{60pt}
+\newlength{\KanjiFontSize}
+\setlength{\KanjiFontSize}{90pt}
 
 %  #1 - id
 %  #2 - kanji
@@ -33,10 +36,12 @@
 
 \newlength{\text@topRightX}
 \newlength{\kanji@text@AvailableWidth}
-\newlength{\kanji@group@TopRightX}
-\newlength{\kanji@group@TopRightY}
-\newlength{\kanji@group@BottomRightX}
-\newlength{\kanji@group@BottomRightY}
+\newlength{\kanji@TopRightX}
+\newlength{\kanji@TopRightY}
+\newlength{\kanji@BottomRightX}
+\newlength{\kanji@BottomRightY}
+\newlength{\kanji@size}
+\setlength{\kanji@size}{\KanjiFontSize + 2\MarginInner}
 
 \define@key{header}{kanjiID}{\def\header@kanji@id{#1}}
 \define@key{header}{kanji}{\def\header@kanji{#1}}
@@ -56,53 +61,66 @@
   \begin{scope}[local bounding box=Header]
     \begin{scope}[local bounding box=KanjiTextGroup]
       \begin{scope}[local bounding box=KanjiGroup, node distance=0]
-        \node (Kanji)
-          [text height=90pt, anchor=north west, inner sep=\MarginInner]
+        \node (KanjiWord)
+          [anchor=north west, inner sep=0, align=left]
           at (0, 0)
-          { \fontsize{90}{90} \header@kanji };
+          {
+            {\raggedright\LARGE\bfseries\sffamily\id.\ \header@keywords.}%
+          };
 
-          \begin{scope}
-            % \node (KanjiID) [anchor = south west]
-            %   at ( $ (Kanji.north west) + (0, \MarginInner) $ )
-            %   { \sffamily\large\bfseries \id };
+        \node (Kanji)
+          [
+            minimum size=\kanji@size,
+            % text width=\KanjiFontSize,
+            % text height=\KanjiFontSize,
+            anchor=north west,
+            inner sep=\MarginInner
+          ]
+          at ( $ (KanjiWord.south west) - (0, 2\MarginInner) $ )
+          { \fontsize{\KanjiFontSize}{\KanjiFontSize} \header@kanji };
 
-            \node (JLPT) [anchor = north east, text height=10pt]
-              at ( $ (Kanji.south east) + (0, 0) $ )
-              { \sffamily \footnotesize JLPT: \header@jlpt };
+          % \begin{scope}
+          %   \node (JLPT) [anchor = north east, text height=10pt]
+          %     at ( $ (Kanji.south east) + (0, 0) $ )
+          %     { \sffamily \footnotesize JLPT: \header@jlpt };
 
-            \node (JouYou) [anchor = north east, text height=10pt]
-              at ( $ (JLPT.south east) + (0, 0) $ )
-              { \footnotesize \sffamily 常用漢字: \header@jouYou };
-          \end{scope}
+          %   \node (JouYou) [anchor = north east, text height=10pt]
+          %     at ( $ (JLPT.south east) + (0, 0) $ )
+          %     { \footnotesize \sffamily 常用漢字: \header@jouYou };
+          % \end{scope}
       \end{scope}
 
       \pgfextractx{\text@topRightX}{\pgfpointanchor{current page text area}{north east}}
 
-      \pgfextractx{\kanji@group@TopRightX}{\pgfpointanchor{KanjiGroup}{north east}}
-      \pgfextracty{\kanji@group@TopRightY}{\pgfpointanchor{KanjiGroup}{north east}}
-      \pgfextractx{\kanji@group@BottomRightX}{\pgfpointanchor{KanjiGroup}{south east}}
-      \pgfextracty{\kanji@group@BottomRightY}{\pgfpointanchor{KanjiGroup}{south east}}
+      \pgfextractx{\kanji@TopRightX}{\pgfpointanchor{Kanji}{north east}}
+      \pgfextracty{\kanji@TopRightY}{\pgfpointanchor{Kanji}{north east}}
+      \pgfextractx{\kanji@BottomRightX}{\pgfpointanchor{Kanji}{south east}}
+      \pgfextracty{\kanji@BottomRightY}{\pgfpointanchor{Kanji}{south east}}
 
-      \pgfmathsetlength{\kanji@text@AvailableWidth}{abs(\text@topRightX - \kanji@group@TopRightX)}
+      \pgfmathsetlength{\kanji@text@AvailableWidth}{abs(\text@topRightX - \kanji@TopRightX)}
+      \Dim{\text@topRightX}
+      \Dim{\kanji@TopRightX}
       \Dim{\kanji@text@AvailableWidth}
-
-      \node (KanjiWord)
-        [anchor=north west, inner sep=0, align=left]
-        at ( $ (Kanji.north east) + (2\MarginInner, 0) $ )
-        { \LARGE\bfseries\sffamily\id.\ \header@keywords };
 
       \node (KanjiText)
         [anchor=north west,
           text width = \kanji@text@AvailableWidth - 2\MarginInner,
           align = left]
-        at ( $ (KanjiWord.south west) - (0, \MarginInner) $ )
+        at ( $ (Kanji.north east) + (2\MarginInner, 0) $ )
         {
           \textbf{音読み}: \header@onYomi\\
           \textbf{訓読み}: \header@kunYomi\\[\MarginInner]
-          \textbf{Words}: \header@words \\
-          \textbf{Story}: \header@story \\[\MarginInner]
-          \textbf{Constituents}: \header@constituents
+          \textbf{Story}: \header@story\\[\MarginInner]
+          \textbf{Words}: \header@words\\[\MarginInner]
+          \textbf{Constituents}: \header@constituents.
         };
+
+        \node (KanjiLevel)
+          [anchor=north east, inner sep=0, align=right]
+          at ( $ (KanjiWord.north east -| KanjiText.north east) $ )
+          {
+            \normalsize\sffamily{JLPT}: \header@jlpt, 常用漢字: \header@jouYou
+          };
     \end{scope}
 
     \node (KanjiStroke)
@@ -171,6 +189,8 @@
     \Dim{\HeaderTopLeftY}
     \Dim{\HeaderBottomLeftY}
     \Dim{\HeaderHeight}
+
+    \providecommand*{\CellFont}{\rmfamily}
 
     \DrawGrid{\kanji}{\CellFont}
   \end{tikzpicture}
